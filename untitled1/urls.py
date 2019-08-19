@@ -24,7 +24,3 @@ urlpatterns = [
     path('c/',include('chat.urls',namespace='')),
     path('f/',include('friends.urls',namespace='')),
 ]
-if settings.DEBUG: # new
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-if settings.DEBUG:
-    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
