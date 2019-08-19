@@ -1,0 +1,23 @@
+{% extends 'layout/basic.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wrong</title>
+</head>
+<body>
+{% block content %}
+    <h1>
+    Wrong registration !!!
+    Try Again ...
+    </h1>
+    <p>
+        <a href="{% url 'register' %}">
+            Registration
+        </a>
+    </p>
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>

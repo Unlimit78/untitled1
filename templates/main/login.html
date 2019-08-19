@@ -1,0 +1,26 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGin</title>
+</head>
+<body>
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>{{ user.username }}</p>
+    {% else %}
+        <form method="post">
+            <div class="container">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="submit"  class="btn btn-outline-dark btn-lg" value="log in">
+            </div>
+        </form>
+    {% endif %}
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>

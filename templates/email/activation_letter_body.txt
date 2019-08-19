@@ -1,0 +1,8 @@
+Dear user , {{user.username}}
+
+You hasve been registrated o our site.
+To activate your account please click on this link :
+
+{{host}}{% url 'register_activate' sign=sign %}
+
+Bye !

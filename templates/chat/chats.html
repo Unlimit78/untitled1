@@ -1,0 +1,56 @@
+{% extends 'layout/basic.html' %}
+{% load filterandtags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chats</title>
+</head>
+<body>
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
+            <h1>
+        Chats
+    </h1>
+            <form action="{% url 'new_chat' %}">
+        <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="New Chat">
+    </form>
+            <div class="list-group" id="chats">
+        {% for chat in chats %}
+            {% get_users_pk user chat as u%}
+
+            <a style="color:black;font-size: 20px;" class="list-group-item" id="#room-name-submit" href="{% url 'chat' chat.pk %}">
+                <div class="row">
+                    <div class="col-md-10">
+                        {{ u.username }}
+                        {% count_messages chat request.user  as i %}
+                        {% if i %}
+                        <span class="badge badge-secondary">{{ i }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-2">
+                        <form action="{% url 'delete_chat' chat.pk %}">
+                    <input type="submit" class="btn btn-outline-dark" value="Delete">
+                </form>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+            </div>
+        </div>
+    </div>
+    <script>
+         var value=0;
+    </script>
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>
+

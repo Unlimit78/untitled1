@@ -1,0 +1,81 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta  http-equiv="Content-Type"
+    content="text/html;  charset=utf-8">
+    <link rel="stylesheet" href="{% static "main/basic.css" %}" />
+    <title>ChatArea</title>
+    {%  bootstrap_css  %}
+    {%  bootstrap_javascript  jquery='slim'  %}
+</head>
+<body>
+<header>
+ <nav class="navbar navbar-expand-md navbar-dark">
+  <a class="navbar-brand" href="{% url 'index' %}">ChatArea</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+  {% if user.is_authenticated %}
+      <ul class="navbar-nav">
+            <li class="nav-item">
+                <div class="btn-group">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile<span class="sr-only">(current)</span></a>
+                    <button type="button" id='btn-tog' class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'profile_change' %}">Profile Settings</a>
+                        <a class="dropdown-item" href="{% url 'password_change' %}">Change password</a>
+                        <a class="dropdown-item" href="{% url 'profile_delete' %}">Delete account</a>
+
+                    </div>
+                </div>
+
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'find_friend'%}">Find Friends</a>
+        </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'friends' %}">Friends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'chats' %}">Chats</a>
+            </li>
+    </ul>
+      <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            </li>
+            <li class="nav-item" >
+            <a class="nav-link" href="{% url  'register' %}">Registration</a>
+        </li>
+      </ul>
+  {% else %}
+      <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}" >Log in</a>
+            </li>
+                <li class="nav-item" >
+            <a class="nav-link" href="{% url  'register' %}">Registration</a>
+        </li>
+            </ul>
+  {% endif %}
+  </div>
+</nav>
+</header>
+<div id="main">
+    {% block content %}
+   {% endblock content %}
+</div>
+{% block foot %}
+    <footer>
+        <div class="container">
+            <a href="{% url 'other_profiles' admin.pk %}"><h1 class="btn btn-outline-dark" style="font-size: 75px; border: 3px solid white;width:1100px;" id="title">Contact me</h1></a>
+        </div>
+    </footer>
+{% endblock foot %}
+</body>
+</html>

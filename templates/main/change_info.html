@@ -1,0 +1,32 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-10">
+            <h1>Profile Settings</h1>
+            <form method="post"  enctype="multipart/form-data">
+        <div class="container">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="Save">
+        </div>
+    </form>
+        </div>
+    </div>
+    </div>
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>

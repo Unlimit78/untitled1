@@ -1,0 +1,117 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+{% block content %}
+    <input type="hidden" value="{{ request.user.username }}" id="author">
+    <input type="hidden" value="{{ messages }}" id="history">
+    <input type="hidden" value="{{ chat.pk }}" id="chat_pk">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6">
+                <div style="overflow-y:auto;height:350px; " id="scroll">
+        {% if messages %}
+            {% for message in messages%}
+                {% if message.author == request.user %}
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-dark">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    {{ message.message }}
+                                </div>
+                                <div class="col-md-2">
+                                    <small>[{{ message.author }}]</small>
+                                </div>
+                            </div>
+                            </a><br>
+                    </div>
+                {% else %}
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-dark">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    {{ message.message }}
+                                </div>
+                                <div class="col-md-2">
+                                    <small>[{{ message.author }}]</small>
+                                </div>
+                            </div>
+                        </a><br>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="list-group" id="list_of_messages">
+
+        </div>
+    </div>
+                <form method="post" id="mform">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <input type="submit" id="chat_submit"  class="btn btn-outline-dark btn-lg btn-block" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    document.getElementById('id_message').style.height = '150px';
+    var socket_url = 'ws://'+ window.location.host + window.location.pathname;
+    var socket = new WebSocket(socket_url);
+    console.log(socket_url);
+
+
+    socket.onmessage = function(event){
+      var request_user = $('#author').val();
+      var data = JSON.parse(event.data);
+      if(request_user === data.author) {
+          $('#list_of_messages').append('<a class="list-group-item list-group-item-dark">' + '<div class="row"><div class="col-md-10"> '+data.message + '</div>' + '<div class="col-md-2"><small>' + '[' + data.author + ']' + '</small></div>' + '</div></a>' + '<br>');
+      }else{
+          $('#list_of_messages').append('<a class="list-group-item list-group-item-dark">' + '<div class="row"><div class="col-md-10"> '+data.message + '</div>' + '<div class="col-md-2"><small>' + '[' + data.author + ']' + '</small></div>' + '</div></a>' + '<br>');
+      }
+
+      var scrolldiv = document.getElementById('scroll');
+      scrolldiv.scrollTop = scrolldiv.scrollHeight;
+    };
+
+    socket.onopen = function(event){
+        var scrolldiv = document.getElementById('scroll');
+        scrolldiv.scrollTop = scrolldiv.scrollHeight;
+        var form = $('#mform');
+        form.submit(function (event) {
+            event.preventDefault();
+            var message=$('#id_message').val();
+            var author = $('#author').val();
+            var chat_pk = $('#chat_pk').val();
+
+            data = {
+                'message':message,
+                'author': author,
+                'chat_pk':chat_pk,
+
+            };
+            socket.send((JSON.stringify(data)));
+
+        });
+    };
+
+    socket.onclose = function(event){
+        console.log('Closed...',event);
+    };
+
+</script>
+
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>

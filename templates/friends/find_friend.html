@@ -1,0 +1,74 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NewFriend</title>
+</head>
+<body>
+{% block content %}
+    <form method="post">
+        <div class="container">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" class="btn btn-outline-dark btn-lg" value="Find Friends ">
+        </div>
+    </form>
+    <div class="container">
+        <ul class="list-group">
+            {% if friend %}
+                {% if friend == request.user %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-4">
+                                 <a style="color:black;font-size: 20px;" href="{% url 'profile' %}">{{ friend.username }}</a>
+                            </div>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <a style="color:black;font-size:20px;" href="{% url 'other_profiles' friend.pk %}">{{ friend.username }}</a>
+                        </div>
+                        <div class="col-md-2">
+                            <form  action="{% url 'add_friend' friend.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-outline-dark" value="Add">
+                    </form>
+                        </div>
+                    </div>
+                     </li>
+                {% endif %}
+            {% else %}
+                {% for user in users %}
+                    {% if user == request.user %}
+                        <li class="list-group-item">
+                            <a style="color:black;font-size: 20px;" href="{% url 'profile'%}" >{{ user.username }}</a>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-10">
+                                     <a  style="color:black;font-size:20px;" href="{% url 'other_profiles' user.pk %}" >{{ user.username }}</a>
+                                </div>
+                                <div class="col-md-2">
+                                    <form  action="{% url 'add_friend' user.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-outline-dark" value="Add to friends">
+                                    </form>
+                                </div>
+                            </div>
+
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends 'layout/basic.html' %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+{% block content %}
+    <form method="post">
+        <div class="container">
+            {% csrf_token %}
+            {% bootstrap_form form layout='horizontal' %}
+            <input type="submit" class="btn btn-outline-dark btn-lg" value="Register">
+        </div>
+    </form>
+{% endblock content %}
+{% block foot %}
+{% endblock foot %}
+</body>
+</html>
