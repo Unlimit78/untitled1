@@ -18,7 +18,7 @@ from friends.models import Friend
 
 
 def index(request):
-    admin = AdvUser.objects.get(pk=1)
+    admin = AdvUser.objects.get(username='admin')
     context = {'admin':admin}
     return render(request,'main/index.html',context)
 
