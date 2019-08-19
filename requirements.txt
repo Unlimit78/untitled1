@@ -41,7 +41,6 @@ PyQt5==5.12.2
 PyQt5-sip==4.19.17
 pyTelegramBotAPI==3.6.6
 pytz==2019.1
-pywin32==224
 qt5reactor==0.5
 redis==2.10.6
 requests==2.22.0
