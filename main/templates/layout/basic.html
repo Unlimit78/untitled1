@@ -73,7 +73,9 @@
 {% block foot %}
     <footer>
         <div class="container">
-            <a href="{% url 'other_profiles' admin.pk %}"><h1 class="btn btn-outline-dark" style="font-size: 75px; border: 3px solid white;width:1100px;" id="title">Contact me</h1></a>
+            {% for a in admin %} 
+            <a href="{% url 'other_profiles' a.pk %}"><h1 class="btn btn-outline-dark" style="font-size: 75px; border: 3px solid white;width:1100px;" id="title">Contact me</h1></a>
+            {% endfor %}
         </div>
     </footer>
 {% endblock foot %}
