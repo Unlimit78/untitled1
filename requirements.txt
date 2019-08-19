@@ -36,7 +36,6 @@ pyasn1==0.4.5
 pycparser==2.19
 pygame==1.9.6
 PyHamcrest==1.9.0
-pypiwin32==223
 PyQt5==5.12.2
 PyQt5-sip==4.19.17
 pyTelegramBotAPI==3.6.6
