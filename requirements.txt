@@ -36,7 +36,7 @@ pyasn1==0.4.5
 pycparser==2.19
 
 PyHamcrest==1.9.0
-pygtk==2.24.2
+
 
 
 
