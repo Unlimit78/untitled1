@@ -22,9 +22,7 @@ hiredis==1.0.0
 
 pathlib2==2.3.4
 
-pycairo==1.18.1
-pygobject==3.32.2
-pygtk==2.24.2
+pygi==1.03
 redis==2.10.6
 requests==2.22.0
 
