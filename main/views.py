@@ -6,14 +6,10 @@ from django.views.generic.edit import UpdateView,CreateView,DeleteView
 from django.views.generic.base import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.core.signing import BadSignature
 from django.contrib.auth import logout
 from django.contrib import messages
-from .utilities import signer
 from .models import AdvUser,Photos
 from .forms import ChangeUsersInfo,RegisterUserForm,PhotoForm
-from django.core.files.base import ContentFile
-from chat.models import Dialog,Message
 from friends.models import Friend
 
 
@@ -76,20 +72,6 @@ class DeleteUser(LoginRequiredMixin,DeleteView):
             queryset = self.get_queryset()
         return get_object_or_404(queryset,pk=self.user_id)
 
-def user_activate(request,sign):
-    try:
-        username = signer.unsign(sign)
-    except BadSignature:
-        return render(request,'main/bad_signature.html')
-    user = get_object_or_404(AdvUser,username=username)
-    if user.is_activated:
-        template = 'main/user_is_activated.html'
-    else:
-        template = 'main/activation_done.html'
-        user.is_active = True
-        user.is_activated = True
-        user.save()
-    return render(request,template)
 
 @login_required
 def profile(request):
