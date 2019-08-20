@@ -1,5 +1,5 @@
 from django import forms
-from .models import  AdvUser,user_registrated,Photos
+from .models import  AdvUser,Photos
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
@@ -28,13 +28,12 @@ class RegisterUserForm(forms.ModelForm):
             raise ValidationError(errors)
 
     def save(self,commit=True):
-        user = super().save(commit=False)
+        user = super().save(commit=True)
         user.set_password(self.cleaned_data['password1'])
-        user.is_active = False
-        user.is_activated = False
+        user.is_active = True
+        user.is_activated = True
         if commit:
             user.save()
-        user_registrated.send(RegisterUserForm,instance=user)
         return user
 
     class Meta:
