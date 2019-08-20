@@ -65,7 +65,7 @@
 
 <script>
     document.getElementById('id_message').style.height = '150px';
-    var socket_url = 'ws://'+'https://chatarea.herokuapp.com' + window.location.pathname;
+    var socket_url = 'wss://'+window.location.host + window.location.pathname;
     var socket = new WebSocket(socket_url);
     console.log(socket_url);
 
