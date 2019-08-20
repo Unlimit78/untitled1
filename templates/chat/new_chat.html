@@ -26,7 +26,7 @@
         </div>
     </div>
     <script>
-    var socket_url = 'ws://'+'https://chatarea.herokuapp.com'+ window.location.pathname;
+    var socket_url = 'wsі://'+window.location.host+ window.location.pathname;
     var socket = new WebSocket(socket_url);
 
     socket.onopen = function(event){
