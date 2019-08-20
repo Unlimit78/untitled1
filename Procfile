@@ -1,1 +1,1 @@
-web: gunicorn untitled1.wsgi 
+web: redis untitled1.wsgi 
