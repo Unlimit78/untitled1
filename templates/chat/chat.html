@@ -65,9 +65,9 @@
 
 <script>
     document.getElementById('id_message').style.height = '150px';
-    var socket_url = 'wss://'+window.location.host + window.location.pathname;
-    var socket = new WebSocket(socket_url);
-    console.log(socket_url);
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + window.location.pathname);
+  
 
 
     socket.onmessage = function(event){
