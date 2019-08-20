@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import index,UserLogin,UserLogout,profile,ChangeInfo,\
-ChangePassword,RegisterUserView,RegisterDoneView,,DeleteUser
+ChangePassword,RegisterUserView,RegisterDoneView,DeleteUser
 
 
 urlpatterns = [
