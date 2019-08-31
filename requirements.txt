@@ -6,7 +6,7 @@ channels==2.2.0
 
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.2
+Django==2.2.4
 django-bootstrap3==11.0.0
 django-bootstrap4==0.0.8
 django-cors-headers==3.0.2
