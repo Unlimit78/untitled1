@@ -23,27 +23,37 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '847y(-+()8-z(gzpvy73j@g&)l=d=)qqyg7d-m&g&^qn2%9uf!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'djangocms_admin_style',
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sitemaps',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
     'main.apps.MainConfig',
     'chat.apps.ChatConfig',
     'friends.apps.FriendsConfig',
-    'channels'
+    'channels',
+    'cms',
+    'treebeard',
+    'menus',
+    'sekizai',
+
 
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +64,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
 ]
 
 ROOT_URLCONF = 'untitled1.urls'
@@ -70,10 +84,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai',
+                'cms.context_processors.cms_settings',
             ],
         },
     },
 ]
+
+CMS_TEMPLATES = (
+    ('default.html', 'Default Template'),
+)
 
 WSGI_APPLICATION = 'untitled1.wsgi.application'
 
@@ -112,6 +132,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ('en-us', 'English'),
+]
 
 TIME_ZONE = 'UTC'
 
@@ -140,20 +163,13 @@ CHANNEL_LAYERS = {
     'default':{
         "BACKEND":'channels_redis.core.RedisChannelLayer',
         'CONFIG':{
-            'hosts':[os.environ.get('REDIS_URL', 'redis://localhost:6379')]
+            'hosts':[('127.0.0.1',6379)]
         },
     },
-}
-CACHES = {
-    "default": {
-         "BACKEND": "redis_cache.RedisCache",
-         "LOCATION": os.environ.get('REDIS_URL'),
-    }
 }
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 if os.getcwd()=='/app':
     import dj_database_url
@@ -161,7 +177,7 @@ if os.getcwd()=='/app':
         'default':dj_database_url.config(default='postgres://localhost')
     }
     SECURE_PROXY_SSL_HEADER = ('HTTP_x_FORWARDED_PROTO','https')
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['chatarea.herokuapp.com']
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     STATIC_ROOT = 'main/static'

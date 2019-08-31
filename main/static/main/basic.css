@@ -6,6 +6,17 @@ header{
 
 #row1{
     background-color: #aaaaaa;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index :10;
 }
 
 
@@ -19,57 +30,39 @@ body{
                 background-color: #aaaaaa;
                 color: white;
                 height: auto !important;
-
-
                 min-height: 100%;
-
-
-
                 position:relative;
+                z-index :0;
 
-                z-index:0;
 
 }
 
 footer{
-
-                height: 245px;
-
-                color:#ccc;
-
-                font-size:12px;
-                bottom: 0;
-
-                position: relative;
-                z-index:-2;
-
-                background-color: black;
-
-
+    height: 140px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    background-color: black;
+    z-index:-2;
+    position:relative;
 
 }
 
-footer > h1{
+html{
+    max-width: 100%;
+}
+
+footer > a > p{
 
                 width:960px;
-
                 position:fixed;
-
                 left:50%;
-
                 bottom:0;
-
                 margin-left:-480px;
-
                 padding-bottom: 60px;
 
-                z-index:-1;
 
 }
-
-
-
-
 
 ::-webkit-scrollbar{
     width:12px;
@@ -86,8 +79,57 @@ footer > h1{
     background-color: black;
 }
 
+#contact{
+    text-shadow: 10px 10px 10px black, 0 0 1em black;
+    text-align: center;
+    color:white;
+    font-size :50px;
+}
+
 #title{
     text-shadow: 10px 10px 10px black, 0 0 1em black;
     text-align: center;
     color:white;
+    font-size :150px;
+    position: relative;
+}
+
+@media (max-width:1000px){
+    body{
+        width:100%;
+    }
+    #title{
+
+        font-size:100px;
+    }
+    footer > a > p{
+        width:480px;
+        margin-left:-240px;
+    }
+
+
+}
+
+@media (max-width:750px){
+    body{
+        width:100%;
+    }
+    #title{
+
+        font-size: 75px;
+    }
+    #contact{
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 500px){
+    body{
+        width:100%;
+    }
+    #title{
+
+        font-size: 50px;
+    }
+
 }

@@ -12,12 +12,12 @@
 {% block content %}
     <div class="container-fluid" id="row1">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 {% if request.user.model_pic %}
                                 <img src="{{ MEDIA_URL }}{{ request.user.model_pic.url }}" alt="profile" style="width:300px;height:300px;border:9px solid lightslategrey;">
                 {% endif %}
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8" id="info_col">
                 <h1 style="font-style: oblique;font-weight: 500;font-variant: small-caps;">{{ request.user.username }}</h1>
                 <a class="btn btn-dark"><h2 style="color:white;width:400px;">First name : {{ request.user.first_name }}</h2></a>
                 <a class="btn btn-dark"><h2 style="color:white;width:400px;">Last name : {{ request.user.last_name }}</h2></a><br><br>
@@ -25,7 +25,6 @@
 
             </div>
         </div>
-        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
@@ -45,11 +44,11 @@
             </div>
                 </div>
             </div>
-        </div>
+
     </div>
 {% endblock content %}
 {% block foot %}
-    <div class="container-fluid" id="row2">
+    <div id="row2">
         <input type="button" class="btn btn-dark btn-lg btn-block" value="Add photo" id="hidden_button" onclick="HiddenFunction();">
         <form method="post" enctype="multipart/form-data" id="form">
             {% csrf_token %}
@@ -105,7 +104,6 @@
         document.getElementById('hidden_input').type='submit';
     }
         document.getElementById('id_photos').style.display='none';
-
     </script>
 {% endblock foot %}
 </body>

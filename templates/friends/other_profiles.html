@@ -11,7 +11,7 @@
 {% block content %}
     <div class="container-fluid" id="row1">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4">
 
                 {% if other.model_pic %}
                                 <img src="{{ MEDIA_URL }}{{ other.model_pic.url }}" alt="profile" style="width:300px;height:300px;border:9px solid lightslategrey;">
@@ -25,14 +25,13 @@
                 {% endif %}
 
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <h1 style="font-style: oblique;font-weight: 500;font-variant: small-caps;">{{ other.username }}</h1>
                 <a class="btn btn-dark"><h2 style="color:white;width:400px;">First name : {{ other.first_name }}</h2></a>
                 <a class="btn btn-dark"><h2 style="color:white;width: 400px;">Last name : {{ other.last_name }}</h2></a><br><br>
                 <a class="btn btn-dark"><h2 style="color:white;width:400px;">Date of birth : {{ other.date_of_birth }}</h2></a>
             </div>
         </div>
-        <div class="container-fluid">
              <div class="row">
                  <div class="col-md-6">
                      <div class="card">
@@ -51,12 +50,11 @@
                 </div>
                  </div>
              </div>
-         </div>
     </div>
 
 {% endblock content %}
 {% block foot %}
-    <div class="container-fluid" id="row2">
+    <div id="row2">
 
         {% if photos %}
             <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">

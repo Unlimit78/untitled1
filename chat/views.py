@@ -2,10 +2,9 @@ from django.shortcuts import render, HttpResponseRedirect,reverse
 from django.contrib.auth.decorators import login_required
 from .models import Dialog,Message
 from friends.models import Friend
-from main.models import AdvUser
+
 from .forms import MessageForm
-from django.utils.safestring import mark_safe
-import json
+
 
 
 @login_required

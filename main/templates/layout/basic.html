@@ -3,15 +3,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta  http-equiv="Content-Type"
-    content="text/html;  charset=utf-8">
+    <meta  http-equiv="Content-Type" name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="{% static "main/basic.css" %}" />
     <title>ChatArea</title>
     {%  bootstrap_css  %}
     {%  bootstrap_javascript  jquery='slim'  %}
 </head>
 <body>
-<header>
+<div class="wrapper">
+    <header>
  <nav class="navbar navbar-expand-md navbar-dark">
   <a class="navbar-brand" href="{% url 'index' %}">ChatArea</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,17 +66,15 @@
   </div>
 </nav>
 </header>
-<div id="main">
+    <div id="main">
     {% block content %}
    {% endblock content %}
 </div>
+</div>
 {% block foot %}
     <footer>
-        <div class="container">
-           
-            <a><h1 class="btn btn-outline-dark" style="font-size: 75px; border: 3px solid white;width:1100px;" id="title">Contact me</h1></a>
-            
-        </div>
+            <a href="{% url 'other_profiles' admin.pk %}"><p class="btn btn-outline-dark" id="contact">Contact me</p></a>
+
     </footer>
 {% endblock foot %}
 </body>
