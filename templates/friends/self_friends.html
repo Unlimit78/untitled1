@@ -1,4 +1,4 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,24 +6,47 @@
     <title>Friends</title>
 </head>
 <body>
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-
-            </div>
-        <div class="col-md-6">
+    <div class="self_friends">
         {% if friends %}
-            <h1>Friends</h1>
-        <ul class="list-group">
+            <h1 class="title">Friends</h1>
+        <ul class="list-friends">
         {% for user in friends %}
-            <li class="list-group-item">
+            <li class="list-friends-item">
                 <input type="hidden" value="{{ user.to_user }}" id="friend">
                 <input type="hidden" value="{{ request.user.username }}" id="user">
                 <input type="hidden" value="{{ chat.pk }}" id="chat_pk">
-                <div class="row">
-                    <div class="col-md-10">
-                        <a style="color:black;font-size:20px;" href="{% url 'other_profiles' user.to_user.pk %}">{{ user.to_user }}</a>
+                <img class="sm_avatar" src="{{ MEDIA_URL }}{{ user.to_user.model_pic.url }}" alt="profile">
+                <a  href="{% url 'other_profiles' user.to_user.pk %}">
+
+                    <div class="words">
+                        {{ user.to_user }}
                     </div>
                     <div class="col-md-2">
                         <form action="{% url 'delete_friend' user.pk %}" method="get">
@@ -31,7 +54,7 @@
                     <input type="submit" class="btn btn-outline-dark" value="Delete">
                 </form>
                     </div>
-                </div>
+                </a>
             </li>
         {% endfor %}
     </ul>
@@ -40,8 +63,6 @@
                 No friends yet.
             </h1>
         {% endif %}
-    </div>
-    </div>
     </div>
 {% endblock content %}
 {% block foot %}

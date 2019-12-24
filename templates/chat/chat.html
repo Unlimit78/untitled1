@@ -1,5 +1,6 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
 {% load bootstrap4 %}
+{% load filterandtags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,45 +8,110 @@
     <title>Chat</title>
 </head>
 <body>
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
     <input type="hidden" value="{{ request.user.username }}" id="author">
     <input type="hidden" value="{{ messages }}" id="history">
     <input type="hidden" value="{{ chat.pk }}" id="chat_pk">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
 
-            </div>
-            <div class="col-md-6">
-                <div style="overflow-y:auto;height:350px; " id="scroll">
+    <div class="box_fr">
+        <div class="ch-chats">
+            <ul class="ch-friends">
+    {% for chat in chats %}
+            {% get_users_pk user chat as u%}
+            <li class="ch-friends-item" >
+                <img class="sm_avatar" src="{{ MEDIA_URL }}{{ u.model_pic.url }}" alt="profile">
+                <a id="#room-name-submit" href="{% url 'chat' chat.pk %}" >
+                    <div class="ch-text">
+                        {{ u.username }}
+                        {% count_messages chat request.user  as i %}
+                        {% if i %}
+                        <span class="badge badge-secondary">{{ i }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="message-delete">
+                        <form action="{% url 'delete_chat' chat.pk %}">
+                    <input type="submit"  value="Delete">
+                </form>
+                    </div>
+                </a>
+
+            </li>
+    {% endfor %}
+    </ul>
+        </div>
+        <script>
+         var value=0;
+    </script>
+    </div>
+
+    <div class="chat">
+        <div style="overflow-y:auto;height:350px; " id="scroll">
         {% if messages %}
             {% for message in messages%}
                 {% if message.author == request.user %}
-                    <div class="list-group">
-                        <a class="list-group-item list-group-item-dark">
+
+                    <div class="list-group-item-dark">
+
+                        <a>
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="my_message">
                                     {{ message.message }}
                                 </div>
-                                <div class="col-md-2">
-                                    <small>[{{ message.author }}]</small>
+                                <div class="text_author">
+                                    <small>{{ message.author }}</small>
                                 </div>
                             </div>
-                            </a><br>
+
+                        </a>
+                        <img class="sm_avatar" src="{{ MEDIA_URL }}{{ request.user.model_pic.url }}" alt="profile">
+
+
                     </div>
+
+                    <br>
                 {% else %}
-                    <div class="list-group">
-                        <a class="list-group-item list-group-item-dark">
+                    <div class="list-group-item-white">
+                        <img class="sm_avatar" src="{{ MEDIA_URL }}{{ message.author.model_pic.url }}" alt="profile">
+                            <a>
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="smt_message">
                                     {{ message.message }}
                                 </div>
-                                <div class="col-md-2">
-                                    <small>[{{ message.author }}]</small>
+                                <div class="text_author">
+                                    <small>{{ message.author }}</small>
                                 </div>
                             </div>
-                        </a><br>
+                        </a>
+
+
                     </div>
+                    <br>
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -53,40 +119,58 @@
 
         </div>
     </div>
-                <form method="post" id="mform">
+        <div class="chat_form">
+            <form method="post" id="mform">
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <input type="submit" id="chat_submit"  class="btn btn-outline-dark btn-lg btn-block" value="Send">
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 
 
+
 <script>
+
     document.getElementById('id_message').style.height = '150px';
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var socket = new WebSocket(ws_scheme + '://' + window.location.host + window.location.pathname);
-  
+
 
 
     socket.onmessage = function(event){
       var request_user = $('#author').val();
       var data = JSON.parse(event.data);
       if(request_user === data.author) {
-          $('#list_of_messages').append('<a class="list-group-item list-group-item-dark">' + '<div class="row"><div class="col-md-10"> '+data.message + '</div>' + '<div class="col-md-2"><small>' + '[' + data.author + ']' + '</small></div>' + '</div></a>' + '<br>');
+          $('#list_of_messages').append('<div class="list-group-item-dark" ><a>'
+              + '<div class="row"><div class="my_message"> '
+              +data.message +
+              '</div>' +
+              '<div class="text_author"><small>'
+              +   data.author   + '</small></div>'
+              + '</div></a>'+
+              '<img class="sm_avatar" src="{{ MEDIA_URL }}{{ request.user.model_pic.url }}" alt="profile"></div>'
+              + '<br>');
       }else{
-          $('#list_of_messages').append('<a class="list-group-item list-group-item-dark">' + '<div class="row"><div class="col-md-10"> '+data.message + '</div>' + '<div class="col-md-2"><small>' + '[' + data.author + ']' + '</small></div>' + '</div></a>' + '<br>');
+          $('#list_of_messages').append('<div class="list-group-item-white"><a>' + '<div class="row"><div class="my_message"> '+data.message + '</div>' + '<div class="text-author"><small>' +   data.author  + '</small></div>' + '</div></a>'+'<img class="sm_avatar" src="{{ MEDIA_URL }}{{ user.to_user.model_pic.url }}" alt="profile"></div>' + '<br>');
       }
+
 
       var scrolldiv = document.getElementById('scroll');
       scrolldiv.scrollTop = scrolldiv.scrollHeight;
     };
 
     socket.onopen = function(event){
+
         var scrolldiv = document.getElementById('scroll');
         scrolldiv.scrollTop = scrolldiv.scrollHeight;
         var form = $('#mform');
+        $('#id_message').keypress(function(event)
+        {
+            if (event.which == 13) {
+                $('#chat_submit').click();
+            }
+        });
         form.submit(function (event) {
             event.preventDefault();
             var message=$('#id_message').val();
@@ -100,6 +184,7 @@
 
             };
             socket.send((JSON.stringify(data)));
+            $('#id_message').val("");
 
         });
     };
@@ -111,7 +196,6 @@
 </script>
 
 {% endblock content %}
-{% block foot %}
-{% endblock foot %}
+
 </body>
 </html>

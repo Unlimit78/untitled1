@@ -72,6 +72,7 @@ class DialogSocket(WebsocketConsumer):
         dialog =Dialog.objects.get(pk=chat_pk)
         dialog.members.add(friend)
         dialog.members.add(user)
+        print(dialog.members)
 
     def disconnect(self, code):
         print('closed...')

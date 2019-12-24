@@ -1,4 +1,4 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
 {% load filterandtags %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,50 +7,67 @@
     <title>Chats</title>
 </head>
 <body>
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-        <div class="col-md-3">
-
-        </div>
-        <div class="col-md-6">
-            <h1>
-        Chats
-    </h1>
-            <form action="{% url 'new_chat' %}">
-        <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="New Chat">
-    </form>
-            <div class="list-group" id="chats">
-        {% for chat in chats %}
+<div class="self-chats">
+    <div class="new_chat_btn">
+        <form action="{% url 'new_chat' %}">
+            <input type="submit" class="btn_photo"  value="New Chat">
+        </form>
+    </div>
+    <ul class="list-friends">
+    {% for chat in chats %}
             {% get_users_pk user chat as u%}
-
-            <a style="color:black;font-size: 20px;" class="list-group-item" id="#room-name-submit" href="{% url 'chat' chat.pk %}">
-                <div class="row">
-                    <div class="col-md-10">
+            <li class="list-friends-item" >
+                <img class="sm_avatar" src="{{ MEDIA_URL }}{{ u.model_pic.url }}" alt="profile">
+                <a id="#room-name-submit" href="{% url 'chat' chat.pk %}" >
+                    <div class="words">
                         {{ u.username }}
                         {% count_messages chat request.user  as i %}
                         {% if i %}
                         <span class="badge badge-secondary">{{ i }}</span>
                         {% endif %}
                     </div>
-                    <div class="col-md-2">
+                    <div class="message-delete">
                         <form action="{% url 'delete_chat' chat.pk %}">
-                    <input type="submit" class="btn btn-outline-dark" value="Delete">
+                    <input type="submit"  value="Delete">
                 </form>
                     </div>
-                </div>
-            </a>
-        {% endfor %}
-    </div>
-            </div>
-        </div>
-    </div>
+                </a>
+            </li>
+    {% endfor %}
+    </ul>
+</div>
     <script>
          var value=0;
     </script>
 {% endblock content %}
-{% block foot %}
-{% endblock foot %}
+
 </body>
 </html>
 

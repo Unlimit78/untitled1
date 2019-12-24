@@ -1,26 +1,53 @@
-{% extends 'layout/basic.html' %}
-{% load bootstrap4 %}
+{% extends 'layout/myfile.html' %}
+{% load static  %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LOGin</title>
+    <title>Login</title>
 </head>
 <body>
+{% block slider %}
+{% endblock slider %}
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="#slider">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
     {% if user.is_authenticated %}
         <p>{{ user.username }}</p>
     {% else %}
-        <form method="post">
+        <form method="post" class="form">
             <div class="container">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                <input type="submit"  class="btn btn-outline-dark btn-lg" value="log in">
+                {{ form.as_p }}
+                <input type="submit"  class="sub" value="log in">
             </div>
         </form>
     {% endif %}
 {% endblock content %}
-{% block foot %}
-{% endblock foot %}
+
 </body>
 </html>

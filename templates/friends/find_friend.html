@@ -1,4 +1,4 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
 {% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +7,34 @@
     <title>NewFriend</title>
 </head>
 <body>
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
-    <form method="post">
+    <form method="post" class="form">
         <div class="container">
             {% csrf_token %}
             {% bootstrap_form form %}
@@ -16,49 +42,46 @@
         </div>
     </form>
     <div class="container">
-        <ul class="list-group">
+        <ul class="list-friends">
             {% if friend %}
                 {% if friend == request.user %}
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-4">
-                                 <a style="color:black;font-size: 20px;" href="{% url 'profile' %}">{{ friend.username }}</a>
-                            </div>
-                        </div>
+                    <li class="list-friends-item">
+                        <a  class="list-text" href="{% url 'profile' %}">
+                            <img class="sm_avatar" src="{{ MEDIA_URL }}{{ request.user.model_pic.url }}" alt="profile">
+                            {{ friend.username }}
+                        </a>
                     </li>
                 {% else %}
-                    <li class="list-group-item">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <a style="color:black;font-size:20px;" href="{% url 'other_profiles' friend.pk %}">{{ friend.username }}</a>
+                    <li class="list-friends-item" >
+                        <div class="row">
+                            <img class="sm_avatar" src="{{ MEDIA_URL }}{{ friend.model_pic.url }}" alt="profile">
+                            <a class="list-text" href="{% url 'other_profiles' friend.pk %}">{{ friend.username }}</a>
+                            <form action="{% url 'add_friend' friend.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Add">
+                             </form>
                         </div>
-                        <div class="col-md-2">
-                            <form  action="{% url 'add_friend' friend.pk %}" method="post">
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-outline-dark" value="Add">
-                    </form>
-                        </div>
-                    </div>
                      </li>
                 {% endif %}
             {% else %}
                 {% for user in users %}
                     {% if user == request.user %}
-                        <li class="list-group-item">
-                            <a style="color:black;font-size: 20px;" href="{% url 'profile'%}" >{{ user.username }}</a>
+                        <li class="list-friends-item">
+
+                            <a class="list-text" href="{% url 'profile'%}" >
+                                <img class="sm_avatar" src="{{ MEDIA_URL }}{{ request.user.model_pic.url }}" alt="profile">
+                                {{ user.username }}
+                            </a>
                         </li>
                     {% else %}
-                        <li class="list-group-item">
+                        <li class="list-friends-item">
                             <div class="row">
-                                <div class="col-md-10">
-                                     <a  style="color:black;font-size:20px;" href="{% url 'other_profiles' user.pk %}" >{{ user.username }}</a>
-                                </div>
-                                <div class="col-md-2">
+                                <img class="sm_avatar" src="{{ MEDIA_URL }}{{ user.model_pic.url }}" alt="profile">
+                                     <a class="list-text" href="{% url 'other_profiles' user.pk %}" >{{ user.username }}</a>
                                     <form  action="{% url 'add_friend' user.pk %}" method="post">
                                         {% csrf_token %}
-                                        <input type="submit" class="btn btn-outline-dark" value="Add to friends">
+                                        <input type="submit"  value="Add to friends">
                                     </form>
-                                </div>
                             </div>
 
                         </li>
@@ -68,7 +91,6 @@
         </ul>
     </div>
 {% endblock content %}
-{% block foot %}
-{% endblock foot %}
+
 </body>
 </html>

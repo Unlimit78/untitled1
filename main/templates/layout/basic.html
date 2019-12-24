@@ -10,6 +10,7 @@
     {%  bootstrap_javascript  jquery='slim'  %}
 </head>
 <body>
+
 <div class="wrapper">
     <header>
  <nav class="navbar navbar-expand-md navbar-dark">
@@ -71,11 +72,13 @@
    {% endblock content %}
 </div>
 </div>
+
 {% block foot %}
     <footer>
             <a href="{% url 'other_profiles' admin.pk %}"><p class="btn btn-outline-dark" id="contact">Contact me</p></a>
 
     </footer>
 {% endblock foot %}
+
 </body>
 </html>

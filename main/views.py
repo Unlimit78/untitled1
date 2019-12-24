@@ -9,16 +9,14 @@ from django.urls import reverse_lazy
 from django.core.signing import BadSignature
 from django.contrib.auth import logout
 from django.contrib import messages
-from .utilities import signer
 from .models import AdvUser,Photos
 from .forms import ChangeUsersInfo,RegisterUserForm,PhotoForm
-from django.core.files.base import ContentFile
-from chat.models import Dialog,Message
+
 from friends.models import Friend
 
 
 def index(request):
-    admin = AdvUser.objects.get(pk=1)
+    admin = AdvUser.objects.get(is_superuser=True)
     context = {'admin':admin}
     return render(request,'main/index.html',context)
 
@@ -76,21 +74,6 @@ class DeleteUser(LoginRequiredMixin,DeleteView):
             queryset = self.get_queryset()
         return get_object_or_404(queryset,pk=self.user_id)
 
-def user_activate(request,sign):
-    try:
-        username = signer.unsign(sign)
-    except BadSignature:
-        return render(request,'main/bad_signature.html')
-    user = get_object_or_404(AdvUser,username=username)
-    if user.is_activated:
-        template = 'main/user_is_activated.html'
-    else:
-        template = 'main/activation_done.html'
-        user.is_active = True
-        user.is_activated = True
-        user.save()
-    return render(request,template)
-
 @login_required
 def profile(request):
     photos = Photos.objects.filter(location=request.user)
@@ -101,3 +84,6 @@ def profile(request):
             photo = Photos.objects.create(location=request.user,photo=form.cleaned_data['photos'])
             return redirect('profile')
     return render(request, 'main/profile.html', {'form': form, 'photos': photos})
+
+def page(request):
+    return render(request, 'main/templates/layout/myfile.html')

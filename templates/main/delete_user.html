@@ -1,4 +1,4 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +7,19 @@
 </head>
 <body>
 {% block content %}
-    <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
 
-        </div>
-        <div class="col-md-8">
-        <form method="post">
-        <div class="container">
-            <div class="jumbotron">
-                <h1 class="display-4">
+
+        <form method="post" class="form">
+
+                <h1 class="title" >
                     Delete account
                 </h1>
                 {% csrf_token %}
                 <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="Delete">
-            </div>
-        </div>
-    </form>
-    </div>
-    </div>
-    </div>
+
+        </form>
+
+
 {% endblock content %}
 {% block foot %}
 {% endblock foot %}

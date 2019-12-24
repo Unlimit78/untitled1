@@ -1,4 +1,4 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
 {% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,26 +7,46 @@
     <title>Title</title>
 </head>
 <body>
-{% block content %}
-    <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-
-        </div>
-        <div class="col-md-10">
-            <h1>Profile Settings</h1>
-            <form method="post"  enctype="multipart/form-data">
-        <div class="container">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="Save">
-        </div>
-    </form>
-        </div>
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
     </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+
+    <h1>Profile Settings</h1>
+    <div class="pr_form">
+    <form method="post"  enctype="multipart/form-data" >
+
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit"  value="Save">
+
+    </form>
     </div>
 {% endblock content %}
-{% block foot %}
-{% endblock foot %}
+
 </body>
 </html>

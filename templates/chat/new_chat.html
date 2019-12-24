@@ -1,4 +1,4 @@
-{% extends 'main/profile.html' %}
+{% extends 'layout/myfile.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,30 +6,65 @@
     <title>New_chat</title>
 </head>
 <body>
+{% block header %}
+<header>
+    <div class="sticky-nav stuck">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
     <input type="hidden" value="{{ chat.pk }}" id="chat_pk">
     <input type="hidden" value="{{ request.user.username }}" id="user">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
+    <div class="self_friends">
+        {% if friends %}
+            <h1 class="title">Friends</h1>
+        <ul class="list-friends">
+        {% for user in friends %}
+            <li class="list-friends-item">
+                <input type="hidden" value="{{ user.to_user }}" id="friend">
+                <input type="hidden" value="{{ request.user.username }}" id="user">
+                <input type="hidden" value="{{ chat.pk }}" id="chat_pk">
+                <div class="row">
+                    <div class="col-md-10">
+                        <a class="list-text" href="{% url 'chat' chat.pk  %}" id="new">{{ user.to_user }}</a>
 
-            </div>
-            <div class="col-md-6">
-                <h1>Choose a friend .</h1>
-                <div class="list-group">
-        {% for friend in friends %}
-            <a style="color:black;font-size:20px;" class="list-group-item" href="{% url 'chat' chat.pk  %}" id="new">{{ friend.to_user }}</a>
-            <input type="hidden" value="{{ friend.to_user }}" id="friend">
-        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        </div>
+            </li>
+        {% endfor %}
+    </ul>
+        {% else %}
+            <h1 class="text-muted">
+                No friends yet.
+            </h1>
+        {% endif %}
     </div>
-    <script>
-    var socket_url = 'wss://'+window.location.host+ window.location.pathname;
-    var socket = new WebSocket(socket_url);
 
-    socket.onopen = function(event){
+    <script>
+        var socket_url = 'ws://'+window.location.host+ window.location.pathname;
+        var socket = new WebSocket(socket_url);
+
+        socket.onopen = function(event){
         document.querySelector('#new').onclick = function(e) {
             var friend_name = document.querySelector('#friend').value;
             var chat_pk = $('#chat_pk').val();
@@ -44,13 +79,14 @@
 
     };
 
-    socket.onclose = function(event){
-        console.log('Closed...',event);
-    };
+        socket.onclose = function(event){
+            console.log('Closed...',event);
+        };
 
     </script>
 
 {% endblock content %}
+
 {% block foot %}
 {% endblock foot %}
 </body>

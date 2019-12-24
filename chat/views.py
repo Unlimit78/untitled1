@@ -24,10 +24,12 @@ def new_chat(request):
 @login_required
 def chat(request,chat_pk):
     dialog = Dialog.objects.get(pk=chat_pk)
+    chats = Dialog.objects.filter(members__in=[request.user])
     form = MessageForm()
     messages = Message.objects.filter(chat=dialog)
     context = {'form':form,
                'messages':messages,
+               'chats':chats,
                }
     return render(request,'chat/chat.html',context)
 

@@ -1,4 +1,5 @@
-{% extends 'layout/basic.html' %}
+{% extends 'layout/myfile.html' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,36 +7,103 @@
     <title>MAIN PAGE</title>
 </head>
 <body>
+{% block slider %}
+    <div class="slider" id="slider">
+    <div class="item">
+        <img src="{% static "main/communication.png" %}" alt="Первый слайд">
+        <div class="slideText">Chat with your mates </div>
+    </div>
+    <div class="item">
+        <img src="{% static "main/friend.jpg" %}" alt="Второй слайд">
+        <div class="slideText">Post photos</div>
+    </div>
+    <div class="item">
+        <img src="{% static "main/message.jpg" %}" alt="Третий слайд">
+        <div class="slideText">Find new friends</div>
+    </div>
+    <a class="prev" onclick="minusSlide()">&#10094;</a>
+    <a class="next" onclick="plusSlide()">&#10095;</a>
+</div>
+{% endblock slider %}
+{% block header %}
+<header>
+    <div class="sticky-nav">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="#slider">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
 {% block content %}
-    <div class="card bg-dark text-white">
-        <img src="media/media/message.jpg" class="card-img" alt="...">
-        <div class="card-img-overlay">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1  id='title' class="card-title" >Enjoy</h1>
-                        <h1 id='title' class="card-title">Communication</h1>
-                    </div>
-
+    <div id="profile" class="page">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="title-page">
+                    <h2 class="title">Profile</h2>
                 </div>
             </div>
+             <img src="{% static "main/profile_part.png" %}" alt="Profile_part" class="parts_">
+        </div>
+
+        <div class="row">
 
         </div>
     </div>
-    <div class="card bg-dark text-white">
-        <img src="media/media/com.jpg" class="card-img" alt="...">
-        <div class="card-img-overlay" style="color: black;">
-            <h1 id='title' class="card-title">Chat With Your Friends</h1>
+</div>
+
+
+
+    <div id="friends" class="page">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="title-page">
+                    <h2 class="title">Friends</h2>
+                </div>
+            </div>
+             <img src="{% static "main/friend_part.png" %}" alt="friend_part" class="parts_">
         </div>
-    </div>
-    <div class="card bg-dark text-white">
-        <img src="media/media/friend.jpg" class="card-img" alt="...">
-        <div class="card-img-overlay">
-            <h1 id='title' class="card-title" >Post</h1>
-            <h1 id='title' class="card-title" >Photos</h1>
+
+        <div class="row">
 
         </div>
     </div>
+</div>
+
+    <div id="chats" class="page">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="title-page">
+                    <h2 class="title">Chats</h2>
+                </div>
+            </div>
+             <img src="{% static "main/chat_part.png" %}" alt="Chat_part" class="parts_">
+        </div>
+
+        <div class="row">
+
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 </body>
