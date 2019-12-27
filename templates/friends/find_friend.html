@@ -1,5 +1,6 @@
 {% extends 'layout/myfile.html' %}
 {% load bootstrap4 %}
+{% load filterandtags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,15 +45,25 @@
     <div class="container">
         <ul class="list-friends">
             {% if friend %}
-                {% if friend == request.user %}
-                    <li class="list-friends-item">
+                {% get_friend request.user friend as f %}
+                {% if friend == requset.user%}
+                        <li class="list-friends-item">
                         <a  class="list-text" href="{% url 'profile' %}">
                             <img class="sm_avatar" src="{{ MEDIA_URL }}{{ request.user.model_pic.url }}" alt="profile">
                             {{ friend.username }}
                         </a>
                     </li>
+
                 {% else %}
-                    <li class="list-friends-item" >
+                    {% if f %}
+                        <li class="list-friends-item">
+                        <a  class="list-text" href="{% url 'profile' %}">
+                            <img class="sm_avatar" src="{{ MEDIA_URL }}{{ friend.model_pic.url }}" alt="profile">
+                            {{ friend.username }}
+                        </a>
+                    </li>
+                    {% else %}
+                        <li class="list-friends-item" >
                         <div class="row">
                             <img class="sm_avatar" src="{{ MEDIA_URL }}{{ friend.model_pic.url }}" alt="profile">
                             <a class="list-text" href="{% url 'other_profiles' friend.pk %}">{{ friend.username }}</a>
@@ -62,6 +73,8 @@
                              </form>
                         </div>
                      </li>
+                    {% endif %}
+
                 {% endif %}
             {% else %}
                 {% for user in users %}
@@ -74,17 +87,26 @@
                             </a>
                         </li>
                     {% else %}
-                        <li class="list-friends-item">
+                        {% get_friend request.user user as f %}
+                        {% if  f %}
+                            <li class="list-friends-item">
+                        <a  class="list-text" href="{% url 'other_profiles' user.pk %}">
+                            <img class="sm_avatar" src="{{ MEDIA_URL }}{{ user.model_pic.url }}" alt="profile">
+                            {{ user.username }}
+                        </a>
+                    </li>
+                        {% else  %}
+                            <li class="list-friends-item" >
                             <div class="row">
                                 <img class="sm_avatar" src="{{ MEDIA_URL }}{{ user.model_pic.url }}" alt="profile">
-                                     <a class="list-text" href="{% url 'other_profiles' user.pk %}" >{{ user.username }}</a>
-                                    <form  action="{% url 'add_friend' user.pk %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="submit"  value="Add to friends">
-                                    </form>
+                                <a class="list-text" href="{% url 'other_profiles' user.pk %}">{{ user.username }}</a>
+                                <form action="{% url 'add_friend' user.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Add">
+                                </form>
                             </div>
-
-                        </li>
+                            </li>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}

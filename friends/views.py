@@ -17,13 +17,14 @@ def other_profiles(request,other_id):
 def find_friend(request):
     form = FindFriendForm()
     users = AdvUser.objects.all()
-    context = {'form':form,'users':users}
+    friends = Friend.objects.filter(from_user=request.user)
+    context = {'form':form,'users':users,'friends':friends}
     if request.method=='POST':
         form = FindFriendForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data['find']
             friend = AdvUser.objects.get(username=data)
-            context = {'form':form,'users':users,'friend':friend}
+            context = {'form':form,'users':users,'friend':friend,'friends':friends}
             return render(request,'friends/find_friend.html',context)
     else:
         return render(request,'friends/find_friend.html',context)
