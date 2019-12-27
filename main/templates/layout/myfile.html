@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Myfile</title>
+    <link href="{% static 'main/mycss.css' %}" rel="stylesheet">
+    <link href="{% static  "main/fontawesome/css/all.css" %}" rel="stylesheet">
+</head>
+<body>
+
+{% block slider %}
+{% endblock slider %}
+{% block header %}
+<header>
+    <div class="sticky-nav">
+        <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+        <nav id="menu">
+            {% if user.is_authenticated %}
+            <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'find_friend'%}">Find friends</a></li>
+                <li><a href="{% url 'friends' %}">Friends</a></li>
+                <li><a href="{% url 'chats' %}" >Chats</a></li>
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% else %}
+                <ul id="menu-nav">
+                <li class="current"><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Log in</a></li>
+                <li><a href="{% url  'register' %}">Registration</a></li>
+            </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+{% endblock header %}
+{% block content %}
+{% endblock content %}
+
+<footer>
+    <h1 class="folow_on">Folow me on </h1>
+    <ul class="social">
+        <li><i class="fab fa-github-square" aria-hidden="true"></i></li>
+        <li><i class="fab fa-google-plus" aria-hidden="true"></i></li>
+        <li><i class="fab fa-telegram" aria-hidden="true"></i></li>
+        <li><i class="fab fa-instagram" aria-hidden="true"></i></li>
+        <li><i class="fab fa-facebook-square"></i></li>
+    </ul>
+    <p class="credits">&copy;2019 ChatArea by <a href="#" title="ChatArea">Taras Ilyashchuk</a></p>
+</footer>
+
+<a id="back-to-top" href="#">
+    <i class="fas fa-arrow-alt-circle-up"></i>
+</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static "main/plugins.js" %}"></script>
+<script src="{% static "main/myjs.js" %}"></script>
+</body>
+</html>

@@ -40,7 +40,7 @@
 
 {% block content %}
     <div class="profile">
-        <div class="info">
+        <div class="info" style="background-image: url({{ MEDIA_URL }}{{ other.profile_fon.url}})">
             <div class="block"></div>
             <div class="ava">
                 {% if request.user.model_pic %}

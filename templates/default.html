@@ -1,0 +1,14 @@
+{% load cms_tags menu_tags sekizai_tags i18n staticfiles %}<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>{% block title %}Magic{% endblock title %}</title>
+   {% render_block "css" %}
+</head>
+<body>
+{% cms_toolbar %}
+{% block content %}{% endblock content %}
+       {% render_block "js" %}
+   </body>
+</html>

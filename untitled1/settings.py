@@ -184,3 +184,4 @@ if os.getcwd()=='/app':
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR,'static'),
     )
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024

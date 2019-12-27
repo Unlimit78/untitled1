@@ -6,10 +6,11 @@ from django.contrib.auth.models import AbstractUser
 class AdvUser(AbstractUser):
     is_activated = models.BooleanField(default=True,db_index=True,verbose_name='Activated ?')
     send_messages = models.BooleanField(default=True,verbose_name='Send messages ?')
-    model_pic = models.ImageField(upload_to='media/',default='media/default.png',blank=True,verbose_name='Image')
+    model_pic = models.ImageField(upload_to='media/',default='media/default.png',blank=True,verbose_name='image')
     date_of_birth = models.DateField(default='2000-08-29',blank=True)
     about = models.TextField(default='',blank=True)
     Hobbys = models.TextField(default='',blank=True)
+    profile_fon = models.ImageField(upload_to='media/', default='media/friend.jpg', blank=True, verbose_name='fonimage')
 
     class Meta:
         pass

@@ -7,7 +7,7 @@ class ChangeUsersInfo(forms.ModelForm):
     email = forms.EmailField(required=True,label='E-mail')
     class Meta:
         model = AdvUser
-        fields = ('model_pic','username','email','first_name','last_name','date_of_birth','about','Hobbys','send_messages',)
+        fields = ('profile_fon','model_pic','username','email','first_name','last_name','date_of_birth','about','Hobbys','send_messages',)
 
 class RegisterUserForm(forms.ModelForm):
     email = forms.EmailField(required=True,label='E-mail')
