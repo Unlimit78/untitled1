@@ -52,6 +52,7 @@
 </header>
 {% endblock header %}
 {% block content %}
+
     <div id="profile" class="page">
     <div class="container">
         <div class="row">
@@ -60,15 +61,16 @@
                     <h2 class="title">Profile</h2>
                 </div>
             </div>
-             <img src="{% static "main/profile_part.png" %}" alt="Profile_part" class="parts_">
-        </div>
-
-        <div class="row">
 
         </div>
+
+
+            <div class="parts_">
+                <a class="words" href="{% url 'login' %}">Start Creating Yourself Now</a>
+            </div>
+
     </div>
 </div>
-
 
 
     <div id="friends" class="page">
@@ -79,12 +81,14 @@
                     <h2 class="title">Friends</h2>
                 </div>
             </div>
-             <img src="{% static "main/friend_part.png" %}" alt="friend_part" class="parts_">
-        </div>
-
-        <div class="row">
 
         </div>
+
+
+            <div class="parts_">
+                <a   class="words" href="{% url 'login' %}">Find New Friends</a>
+            </div>
+
     </div>
 </div>
 
@@ -96,14 +100,17 @@
                     <h2 class="title">Chats</h2>
                 </div>
             </div>
-             <img src="{% static "main/chat_part.png" %}" alt="Chat_part" class="parts_">
-        </div>
-
-        <div class="row">
 
         </div>
+
+
+            <div class="parts_">
+                <a class="words" href="{% url 'login' %}">Chat With Your Mates</a>
+            </div>
+
     </div>
 </div>
+
 {% endblock content %}
 
 </body>
