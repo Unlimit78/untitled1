@@ -1147,6 +1147,7 @@ a{
     margin-right:0;
     position:relative;
     height: 75px;
+    width:75px;
     display: inline;
     justify-content: center;
     align-items: center;
