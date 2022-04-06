@@ -51,7 +51,7 @@ sqlparse==0.3.0
 static3==0.7.0
 style==1.1.0
 Telethon==1.8.0
-Twisted==19.2.1
+Twisted==22.2.0
 txaio==18.8.1
 update==0.0.1
 urllib3==1.25.3
